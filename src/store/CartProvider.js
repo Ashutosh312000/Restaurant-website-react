@@ -15,7 +15,6 @@ const CartProvider = (props) => {
       if(ele.id===item.id){
         ele.quantity=(+ele.quantity)+(+item.quantity);
         newadd=false;
-        console.log(ele)
       }
       return ele;
     })
@@ -25,7 +24,29 @@ const CartProvider = (props) => {
   };
 
   const removeItemFromCartHandler = (id) => {
-   
+    let price=0;
+    const updateitems=items.map((ele)=>{
+      if(ele.id===id){
+        if(ele.quantity<=1){
+          price=ele.price
+          return null;
+        }
+        else{
+          ele.quantity-=1;
+          price=ele.price
+          return ele;
+        }
+      }
+      return ele;
+    })
+    
+    const finalupdateitems=updateitems.filter((ele)=>{
+      return ele!=null;
+    })
+
+    setItems(finalupdateitems);
+    updateTotalAmount((+totalamount-price).toFixed(2))
+
   };
 
   const cartContext = {
